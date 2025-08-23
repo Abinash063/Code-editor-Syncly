@@ -94,6 +94,10 @@ const __dirname = path.resolve();
 //  res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"));
 //});
 
+app.get("/", (req, res) => {
+  res.send("Backend is running 🚀");
+});
+
 
 server.listen(port, () => {
   console.log(`Server is running on port ${port}`);
