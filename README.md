@@ -22,15 +22,14 @@ https://syncly-code-editor.netlify.app/
 
 🛠️ Tech Stack
 
-Frontend: React, React Router, CodeMirror/Monaco Editor, Tailwind CSS
+Frontend: React, React Router, CodeMirror/Monaco Editor, CSS
 
 Backend: Node.js, Express.js
 
 Real-time: Socket.IO
 
-Database (optional): MongoDB
 
-Deployment: Vercel / Render / Netlify / Railway
+Deployment:  Render / Netlify 
 
 🚀 Getting Started
 1️⃣ Clone the repo
