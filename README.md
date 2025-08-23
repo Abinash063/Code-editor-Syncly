@@ -1,60 +1,74 @@
-# 💻 Real-Time Collaborative Code Editor
+⚡ Syncly Code Editor
 
-A **real-time collaborative code editor** built with **React, Socket.IO, and Monaco Editor**, featuring **multi-language code execution**.  
-This project allows multiple users to join coding rooms, write code together, and collaborate seamlessly with a clean dark-themed UI.
+A real-time collaborative code editor built with MERN + Socket.IO. Write, edit, and share code with others instantly. 🚀
 
----
+🔗 Live Demo
 
-## 🚀 Features
-- 🔑 **Room System**: Join/Leave coding rooms with unique room IDs  
-- 👥 **Collaboration**: Multiple users coding together in real-time  
-- 💬 **User Presence**: Typing indicator shows active users  
-- 🖊️ **Code Editor**: Monaco Editor with syntax highlighting & themes  
-- 🌐 **Multi-Language Support**: JavaScript, Python, Java, C++  
-- 📋 **Room Sharing**: Copy/Share room ID functionality  
-- 🎨 **UI/UX**: Modern dark UI for better readability  
+👉 Try Syncly Code Editor here
 
----
+https://syncly-code-editor.netlify.app/
 
-## 🛠️ Tech Stack
-- **Frontend:** React, Monaco Editor, CSS  
-- **Backend:** Node.js, Express, Socket.IO  
+📌 Features
 
----
+👩‍💻 Real-time Collaboration – Multiple users can edit code simultaneously
 
-📦 Dependencies
+⚡ WebSocket Powered – Low-latency updates with Socket.IO
 
-This project uses the following major dependencies:
+🌙 Dark & Light Theme – Smooth theme switching
+
+💾 Persistent Projects – Save and manage code snippets
+
+🎨 Modern UI – Responsive, minimal, and developer-friendly
+
+🛠️ Tech Stack
+
+Frontend: React, React Router, CodeMirror/Monaco Editor, Tailwind CSS
+
+Backend: Node.js, Express.js
+
+Real-time: Socket.IO
+
+Database (optional): MongoDB
+
+Deployment: Vercel / Render / Netlify / Railway
+
+🚀 Getting Started
+1️⃣ Clone the repo
+git clone https://github.com/Abinash063/Code-editor-Syncly.git
+cd syncly-code-editor
+
+2️⃣ Install dependencies
+Backend
+cd backend
+npm install
 
 Frontend
+cd frontend
+npm install
 
-React
- – UI framework
+3️⃣ Run locally
 
-@monaco-editor/react
- – Code editor component
+Start backend:
 
-socket.io-client
- – Real-time communication with server
+cd backend
+npm run dev
 
-Backend
 
-Express
- – Web framework for Node.js
+Start frontend:
 
-Socket.IO
- – WebSockets for real-time events
+cd frontend
+npm start
 
-http (Node.js built-in)
- – Required to run Express with Socket.IO
-
-Dev Dependencies
-
-nodemon
- – Auto-restarts the server on changes (optional for development)
+📂 Project Structure
+syncly-code-editor/
+│── backend/        # Express + Socket.IO server
+│── frontend/       # React app (Code Editor + UI)
+│── package.json    # root config 
+│── README.md       # project docs
 
 
 
+🤝 Contributing
 
-
-
+Contributions, issues, and feature requests are welcome!
+Feel free to fork this repo and submit a PR.
