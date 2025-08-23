@@ -15,13 +15,24 @@ const App = () => {
   const [users, setUsers] = useState([]);
   const [typing, setTyping] = useState("");
 
+  // sidebar collapse
+  const [collapsed, setCollapsed] = useState(false);
+
+  // collapse automatically on mobile, expand on desktop
   useEffect(() => {
-    socket.on("userJoined", (users) => {
-      setUsers(users);
+    const applyByWidth = () => setCollapsed(window.innerWidth <= 768);
+    applyByWidth();
+    window.addEventListener("resize", applyByWidth);
+    return () => window.removeEventListener("resize", applyByWidth);
+  }, []);
+
+  useEffect(() => {
+    socket.on("userJoined", (usersList) => {
+      setUsers(usersList);
     });
 
     socket.on("codeUpdate", (newCode) => {
-      setCode(newCode);
+      setCode(newCode ?? "");
     });
 
     socket.on("userTyping", (user) => {
@@ -74,8 +85,9 @@ const App = () => {
   };
 
   const handleCodeChange = (newCode) => {
-    setCode(newCode);
-    socket.emit("codeChange", { roomId, code: newCode });
+    const safe = newCode ?? "";
+    setCode(safe);
+    socket.emit("codeChange", { roomId, code: safe });
     socket.emit("typing", { roomId, userName });
   };
 
@@ -110,15 +122,28 @@ const App = () => {
 
   return (
     <div className="editor-container">
-      <div className="sidebar">
-        <div className="room-Info">
+      <div className={`sidebar ${collapsed ? "collapsed" : ""}`}>
+        {/* mobile toggle */}
+        <button
+          className="collapse-toggle"
+          aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+          onClick={() => setCollapsed((c) => !c)}
+          title={collapsed ? "Expand" : "Collapse"}
+        >
+          {collapsed ? "☰" : "✕"}
+        </button>
+
+        <div className="room-info">
           <h2>Code Room: {roomId}</h2>
           <button className="copy-button" onClick={copyRoomId}>
-            Copy Id
+            <span className="icon">📋</span>{" "}
+            <span className="label">Copy Id</span>
           </button>
           {copySuccess && <span className="copy-success">{copySuccess}</span>}
         </div>
 
+        {/* Users */}
+        <span className="users-chip">👥 {users.length}</span>
         <h3>Users in Room:</h3>
         <ul>
           {users.map((user, index) => (
@@ -154,6 +179,7 @@ const App = () => {
           options={{
             minimap: { enabled: false },
             fontSize: 14,
+            automaticLayout: true, // <-- important for resize after collapse
           }}
         />
       </div>
