@@ -1,73 +1,117 @@
-⚡ Syncly Code Editor
+🎨 Syncly Code Editor
 
-A real-time collaborative code editor built with MERN + Socket.IO. Write, edit, and share code with others instantly. 🚀
+A collaborative real-time online code editor with built-in compiler support.
+Supports multiple programming languages, real-time collaboration using Socket.IO, and live execution using the EMKC open-source compiler API.
 
-🔗 Live Demo
+🌐 Live Demo: https://syncly-code-editor.netlify.app/
 
-👉 Try Syncly Code Editor here
+✨ Features
 
-https://syncly-code-editor.netlify.app/
-
-📌 Features
-
-👩‍💻 Real-time Collaboration – Multiple users can edit code simultaneously
-
-⚡ WebSocket Powered – Low-latency updates with Socket.IO
-
-🌙 Dark & Light Theme – Smooth theme switching
-
-💾 Persistent Projects – Save and manage code snippets
-
-🎨 Modern UI – Responsive, minimal, and developer-friendly
+✅ Real-time collaborative code editing with Socket.IO
+✅ Syntax highlighting for multiple languages
+✅ Run code instantly using EMKC Compiler API
+✅ Responsive UI with collapsible sidebar
+✅ Light & Dark mode support
+✅ Simple & clean design
 
 🛠️ Tech Stack
 
-Frontend: React, React Router, CodeMirror/Monaco Editor, CSS
+Frontend: React.js, Tailwind CSS
 
-Backend: Node.js, Express.js
+Backend: Node.js, Express.js, Socket.IO
 
-Real-time: Socket.IO
+Compiler API: EMKC Open Source API
 
-
-Deployment:  Render / Netlify 
+Deployment: Render / Vercel
 
 🚀 Getting Started
-1️⃣ Clone the repo
-git clone https://github.com/Abinash063/Code-editor-Syncly.git
+1. Clone the Repository
+https://github.com/Abinash063/Code-editor-Syncly.git
 cd syncly-code-editor
 
-2️⃣ Install dependencies
-Backend
-cd backend
+2. Install Dependencies
 npm install
 
-Frontend
-cd frontend
+3. Run Backend
+cd Backend
 npm install
-
-3️⃣ Run locally
-
-Start backend:
-
-cd backend
 npm run dev
 
-
-Start frontend:
-
+4. Run Frontend
 cd frontend
-npm start
+npm install
+npm run dev
 
-📂 Project Structure
-syncly-code-editor/
-│── backend/        # Express + Socket.IO server
-│── frontend/       # React app (Code Editor + UI)
-│── package.json    # root config 
-│── README.md       # project docs
+⚡ Usage
+
+Open the editor in your browser.
+
+Select a programming language.
+
+Write code in the editor.
+
+Click Run to execute code (handled by EMKC Compiler API).
+
+Share the link with friends to collaborate in real-time.
+
+📸 Screenshots
+💻 Desktop View
+
+📱 Mobile View
+
+🔧 API Reference (Compiler)
+
+We use Piston API from EMKC
+.
+
+Run Code Example:
+
+POST https://emkc.org/api/v2/piston/execute
 
 
+Request Body:
+
+{
+  "language": "python3",
+  "version": "3.10.0",
+  "files": [
+    {
+      "name": "main.py",
+      "content": "print('Hello, World!')"
+    }
+  ]
+}
+
+
+Response:
+
+{
+  "run": {
+    "stdout": "Hello, World!\n",
+    "stderr": "",
+    "code": 0,
+    "signal": null
+  }
+}
+
+📦 Deployment
+
+Frontend: Deployed on Netlify
+
+Backend: Deployed on Render
 
 🤝 Contributing
 
-Contributions, issues, and feature requests are welcome!
-Feel free to fork this repo and submit a PR.
+Fork the repo
+
+Create your feature branch (git checkout -b feature-name)
+
+Commit changes (git commit -m "Added new feature")
+
+Push branch (git push origin feature-name)
+
+Create a Pull Request
+
+👨‍💻 Author
+
+Developed by Abinash Kumar Pandab ✨
