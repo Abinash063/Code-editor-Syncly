@@ -10,10 +10,14 @@ const App = () => {
   const [roomId, setRoomId] = useState("");
   const [userName, setUserName] = useState("");
   const [language, setLanguage] = useState("javascript");
-  const [code, setCode] = useState("");
+  const [code, setCode] = useState("// start code here");
   const [copySuccess, setCopySuccess] = useState("");
   const [users, setUsers] = useState([]);
   const [typing, setTyping] = useState("");
+
+  // NEW: compiler states
+  const [output, setOutput] = useState("");
+  const [running, setRunning] = useState(false);
 
   // sidebar collapse
   const [collapsed, setCollapsed] = useState(false);
@@ -27,23 +31,15 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    socket.on("userJoined", (usersList) => {
-      setUsers(usersList);
-    });
-
-    socket.on("codeUpdate", (newCode) => {
-      setCode(newCode ?? "");
-    });
-
+    socket.on("userJoined", (usersList) => setUsers(usersList));
+    socket.on("codeUpdate", (newCode) => setCode(newCode ?? ""));
     socket.on("userTyping", (user) => {
       setTyping(`${user.slice(0, 8)}.. is typing`);
       setTimeout(() => setTyping(""), 2000);
     });
-
     socket.on("languageUpdate", (newLanguage) => {
       setLanguage(newLanguage);
     });
-
     return () => {
       socket.off("userJoined");
       socket.off("codeUpdate");
@@ -57,9 +53,7 @@ const App = () => {
       socket.emit("leaveRoom");
     };
     window.addEventListener("beforeunload", handleBeforeUnload);
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-    };
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, []);
 
   const joinRoom = () => {
@@ -76,6 +70,7 @@ const App = () => {
     setUserName("");
     setCode("// start code here");
     setLanguage("javascript");
+    setOutput("");
   };
 
   const copyRoomId = () => {
@@ -95,6 +90,32 @@ const App = () => {
     const newLanguage = e.target.value;
     setLanguage(newLanguage);
     socket.emit("languageChange", { roomId, language: newLanguage });
+  };
+
+  // NEW: run code via Piston API
+  const runCode = async () => {
+    setRunning(true);
+    setOutput("Running...");
+    try {
+      const res = await fetch("https://emkc.org/api/v2/piston/execute", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          language,
+          version: "*",
+          files: [{ content: code }],
+        }),
+      });
+      const data = await res.json();
+      if (data.run) {
+        setOutput(data.run.output || "No output");
+      } else {
+        setOutput("Unexpected response from API");
+      }
+    } catch (err) {
+      setOutput("Error: " + err.message);
+    }
+    setRunning(false);
   };
 
   if (!joined) {
@@ -128,7 +149,6 @@ const App = () => {
           className="collapse-toggle"
           aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
           onClick={() => setCollapsed((c) => !c)}
-          title={collapsed ? "Expand" : "Collapse"}
         >
           {collapsed ? "☰" : "✕"}
         </button>
@@ -136,8 +156,7 @@ const App = () => {
         <div className="room-info">
           <h2>Code Room: {roomId}</h2>
           <button className="copy-button" onClick={copyRoomId}>
-            <span className="icon">📋</span>{" "}
-            <span className="label">Copy Id</span>
+            📋 Copy Id
           </button>
           {copySuccess && <span className="copy-success">{copySuccess}</span>}
         </div>
@@ -164,6 +183,10 @@ const App = () => {
           <option value="cpp">C++</option>
         </select>
 
+        <button className="run-button" onClick={runCode} disabled={running}>
+          {running ? "Running..." : "Run Code"}
+        </button>
+
         <button className="leave-button" onClick={leaveRoom}>
           Leave Room
         </button>
@@ -171,7 +194,7 @@ const App = () => {
 
       <div className="editor-wrapper">
         <Editor
-          height="100%"
+          height="70%"
           language={language}
           value={code}
           onChange={handleCodeChange}
@@ -179,9 +202,15 @@ const App = () => {
           options={{
             minimap: { enabled: false },
             fontSize: 14,
-            automaticLayout: true, // <-- important for resize after collapse
+            automaticLayout: true,
           }}
         />
+
+        {/* Output Panel */}
+        <div className="output-panel">
+          <h3>Output</h3>
+          <pre>{output}</pre>
+        </div>
       </div>
     </div>
   );
